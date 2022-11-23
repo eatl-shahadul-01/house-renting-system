@@ -1,13 +1,12 @@
 package bd.com.squarehealth.corelibrary.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +16,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class ApiResponse {
 
-    private Date date = new Date();
+    private String date = Instant.now().toString();
     private int status;
     private HttpStatus httpStatus;
     private String message;
