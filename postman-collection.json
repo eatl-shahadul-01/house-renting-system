@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b3dea003-7c56-4590-a403-822e89a187b2",
+		"_postman_id": "0c7e8ee1-e2e0-40a9-833d-30bcfaf6bd3b",
 		"name": "house-renting-system",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -329,6 +329,138 @@
 					]
 				}
 			]
+		},
+		{
+			"name": "authenticator",
+			"item": [
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"admin@squarehealth.com.bd\",\r\n    \"password\": \"12345678\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{authenticatorHost}}/{{authenticatorBasePath}}/v{{authenticatorApiVersion}}/users/login",
+									"host": [
+										"{{authenticatorHost}}"
+									],
+									"path": [
+										"{{authenticatorBasePath}}",
+										"v{{authenticatorApiVersion}}",
+										"users",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Md. Shahadul Alam Patwary\",\r\n    \"email\": \"shahadul.eatl@gmail.com\",\r\n    \"password\": \"12345678\",\r\n    \"confirmationPassword\": \"12345678\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{authenticatorHost}}/{{authenticatorBasePath}}/v{{authenticatorApiVersion}}/users/register",
+									"host": [
+										"{{authenticatorHost}}"
+									],
+									"path": [
+										"{{authenticatorBasePath}}",
+										"v{{authenticatorApiVersion}}",
+										"users",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verify",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"shahadul.eatl@gmail.com\",\r\n    \"otp\": \"123456\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{authenticatorHost}}/{{authenticatorBasePath}}/v{{authenticatorApiVersion}}/users/verify",
+									"host": [
+										"{{authenticatorHost}}"
+									],
+									"path": [
+										"{{authenticatorBasePath}}",
+										"v{{authenticatorApiVersion}}",
+										"users",
+										"verify"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Admin (Admin)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "bearer {{accessToken}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Md. Shahadul Alam Patwary\",\r\n    \"email\": \"shahadul.eatl@gmail.com\",\r\n    \"password\": \"12345678\",\r\n    \"confirmationPassword\": \"12345678\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{authenticatorHost}}/{{authenticatorBasePath}}/v{{authenticatorApiVersion}}/users/admin",
+									"host": [
+										"{{authenticatorHost}}"
+									],
+									"path": [
+										"{{authenticatorBasePath}}",
+										"v{{authenticatorApiVersion}}",
+										"users",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
 		}
 	],
 	"event": [
@@ -354,12 +486,27 @@
 	"variable": [
 		{
 			"key": "accessToken",
-			"value": "",
+			"value": "eyJhbGciOiJSUzUxMiJ9.eyJkYXRhIjp7InVzZXJUeXBlIjoiQWRtaW4iLCJlbWFpbCI6ImFkbWluQHNxdWFyZWhlYWx0aC5jb20uYmQifSwiaXNzIjoiU3F1YXJlIEhlYWx0aCBMdGQuIiwiaWF0IjoxNjY5MjA5NTcwfQ.V4F1d-HcYiPi4BlZ1aAc9Z7zQ3YKs2eU_b2YcP1ZAwbk2aLhRv_ESiNhky1dDw5BbC9aNy6YO38nW4YxN8tk2jOmFZ7r6ygWlZiyE9164kCl1jrOEOeLEdjwa69zxFdJ8YNYPHXSOmEHtXkaqZKvMv8tqwkRd988EF8Sh2V326qqYMwJ8Ftso9O6dZS6TsEN-OJtMqYIthRlUDm5bjaEInouExH2140UPEalKKuHf088d-Pu0M5ddF8tjKeZKPi2EHBoVlVG29iEDF8xIbobiuT3v_Kc2D9Ovd_NcCY5gNtXpI3KrKOzN8gHmzYzywq1ldxbuRmFnzx-bS_Z3rw6f5Y0bwXiqKjHh22HIk3yjblU_M7AtfhqgB9ZmiLlZsAP7HQxNEn1dg-Ja3w30qE5pEJ4z3p8p-519DJrAYwhIVYyVXYI_F-jYtccX_dBJ_YyKBMDnWJthVycLRjDrFPJfH0cZn3YlZeKDbU6ZF6om-tDWCQTS0E4Nx_yQFacHjDu14b-3KTUquWKR2tz07XtuglfPfA3WuUHe-R2lVpLqb4og1v3iXh60j09mNLGraILMgDoXB4S2Z0V5Nc7pUWJehBso_c3Midu8-hkibxT6nqLESw08kOg721kuJaDPmTCLP7wL7h24nzmhBuAsmWWb8OUZvAVUKdkbwWEMfsI_zM",
 			"type": "default"
 		},
 		{
 			"key": "refreshToken",
-			"value": "",
+			"value": "eyJhbGciOiJSUzUxMiJ9.eyJkYXRhIjp7ImVtYWlsIjoiYWRtaW5Ac3F1YXJlaGVhbHRoLmNvbS5iZCJ9LCJpc3MiOiJTcXVhcmUgSGVhbHRoIEx0ZC4iLCJpYXQiOjE2NjkyMDk1NzB9.1kU_li6CAYpfr8z_8TvVQ5owMV1Sn81HDTGHlmIGdGmGjQHSWtsASceXqqRRWqsbCglBLQYLVXjS6fG4Gm1WGtHDhs-p8cDBuYsoLR_63ZXzZtBdKWYMxny3WBiz9Td7tiIl1HqsxGBFJWvVGFAknfBSIE43pRo0Ztt9n9uC5blVkOST-BzMbVobxJaiuGmQuDFMpnu0jY44f-pOEH-Fcx34Oc3bQzuXibJB_xWv0TyKb7d3w5xL7N0E1ih8045o_WfLTHJyulDoY9kR3UMaz-kg_lFfziSemvweOzgYgPFTRGO87DkvSYbG1C7-PSbcQfAF5qgAGdvttBYMDRiCFkuER0dh4AneInD1achjFJY6Qwn0Jj5nCflaRfdVcxD0hImRyjxspcPEgnjFpjEn5zCtE-uUywsD7Uvsav5_lYePw6q7lBdoo8lpdqIfdjGha1mis88Q6wo1gN6oZhRP4RvPsC5jK6sAaE8GsXneLIMqo_HOeO7T4W9X5PKjc4OJ7QT_npZlzK0pC6II0UpzhKzWP6RPQRsQORPZmkLZwvD38ZPrxmstS0HZis_j4MNZ3nCZC0UibrxYYD35uxdZwz8u_iolKo-wfqQiXALwM3HxJpiJWqzmSKWCTLjnGyxXpgTz9rHRbna71yCdRkAh6sr8PjivWSwV9R2sqsjvSj0",
+			"type": "default"
+		},
+		{
+			"key": "authenticatorHost",
+			"value": "http://127.0.0.1:61301",
+			"type": "default"
+		},
+		{
+			"key": "authenticatorBasePath",
+			"value": "api/authenticator",
+			"type": "default"
+		},
+		{
+			"key": "authenticatorApiVersion",
+			"value": "1.0",
 			"type": "default"
 		},
 		{
