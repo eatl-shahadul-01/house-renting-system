@@ -1,20 +1,29 @@
 package bd.com.squarehealth.rentalsearch.controllers;
 
 import bd.com.squarehealth.corelibrary.common.ApiResponse;
-import bd.com.squarehealth.rentalsearch.dtos.HouseSearchRequestDto;
+import bd.com.squarehealth.corelibrary.dtos.HouseSearchCriteriaDto;
+import bd.com.squarehealth.corelibrary.services.HousesService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping(path = "/v{version}/houses")
 public class HousesController {
 
-    @PostMapping(path = "/search")
-    public ApiResponse search(
+    @Autowired
+    private HousesService housesService;
+
+    @PostMapping
+    public ApiResponse searchHouses(
             @RequestBody
-            HouseSearchRequestDto postSearchRequestData) {
-        System.out.println(postSearchRequestData);
+            HouseSearchCriteriaDto houseSearchCriteria) throws Exception {
+        System.out.println(houseSearchCriteria.toJson());
+
+        houseSearchCriteria.validate();
 
         return new ApiResponse(HttpStatus.OK, "OK");
     }

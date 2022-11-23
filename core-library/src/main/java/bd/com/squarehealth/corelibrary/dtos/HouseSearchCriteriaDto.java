@@ -1,20 +1,26 @@
-package bd.com.squarehealth.rentalsearch.dtos;
+package bd.com.squarehealth.corelibrary.dtos;
 
+import bd.com.squarehealth.corelibrary.common.ApiException;
 import bd.com.squarehealth.corelibrary.common.Mapper;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.http.HttpStatus;
 
 import javax.validation.constraints.Size;
 import java.util.Date;
 
 @NoArgsConstructor
 @Data
-public class HouseSearchRequestDto implements Mapper {
+public class HouseSearchCriteriaDto implements Mapper {
 
     private Date checkInDate;
     private Date checkOutDate;
+
+    @Range(min = 3500000L, max = 25000000L, message = "Price must be greater than or equal to 3500000 and less than or equal to 25000000.")
     private Double minimumPrice;
+
+    @Range(min = 3500000L, max = 25000000L, message = "Price must be greater than or equal to 3500000 and less than or equal to 25000000.")
     private Double maximumPrice;
 
     @Range(min = -90, max = 90, message = "Latitude must be between -90 and 90.")
@@ -57,10 +63,13 @@ public class HouseSearchRequestDto implements Mapper {
         return true;
     }
 
-    public boolean areDataValid() {
-        if (maximumPrice < minimumPrice) { return false; }
-        if (!areCheckInCheckOutDatesValid()) { return false; }
+    public void validate() throws Exception {
+        if (maximumPrice < minimumPrice) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Minimum price must be less than the maximum price.");
+        }
 
-        return true;
+        if (!areCheckInCheckOutDatesValid()) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid check-in/check-out dates provided.");
+        }
     }
 }
