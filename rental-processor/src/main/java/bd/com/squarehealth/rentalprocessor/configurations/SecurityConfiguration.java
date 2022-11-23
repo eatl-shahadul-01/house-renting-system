@@ -1,4 +1,4 @@
-package bd.com.squarehealth.authenticator.configurations;
+package bd.com.squarehealth.rentalprocessor.configurations;
 
 import bd.com.squarehealth.corelibrary.configurations.WebSecurityConfiguration;
 import bd.com.squarehealth.corelibrary.enumerations.UserRole;
@@ -20,32 +20,16 @@ public class SecurityConfiguration extends WebSecurityConfiguration {
     }
 
     @Override
-    protected boolean shallAddAuthenticationFilter() { return true; }
+    protected boolean shallAddAuthenticationFilter() { return false; }
 
     @Override
     protected boolean shallAddAuthorizationFilter() { return true; }
 
     @Override
-    protected String[] configureServletRoutesToIgnore() {
-        return new String[] {
-                "POST::/v1.0/users/login",
-                "POST::/v1.0/users/register",
-                "POST::/v1.0/users/verify",
-        };
-    }
-
-    @Override
-    protected String filterProcessesUrl() {
-        return "/v1.0/users/login";
-    }
-
-    @Override
     protected void configureHttpSecurity(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/v1.0/users/login").permitAll()
-                .antMatchers(HttpMethod.POST, "/v1.0/users/register").permitAll()
-                .antMatchers(HttpMethod.POST, "/v1.0/users/verify/**").permitAll()
-                // users of admin type can access this path...
-                .antMatchers(HttpMethod.POST, "/v1.0/users/admin").hasAuthority(UserRole.ADMIN.getValue());
+                // users with admin role can access this path...
+                .antMatchers(HttpMethod.GET, "/v1.0/posts/pending").hasAuthority(UserRole.ADMIN.getValue())
+                .antMatchers(HttpMethod.PATCH, "/v1.0/posts/*/status/*").hasAuthority(UserRole.ADMIN.getValue());
     }
 }

@@ -2,11 +2,13 @@ package bd.com.squarehealth.rentalprocessor.controllers;
 
 import bd.com.squarehealth.corelibrary.common.ApiException;
 import bd.com.squarehealth.corelibrary.common.ApiResponse;
-import bd.com.squarehealth.rentalprocessor.dtos.BookingDto;
-import bd.com.squarehealth.rentalprocessor.enumerations.BookingStatus;
-import bd.com.squarehealth.rentalprocessor.services.BookingsService;
+import bd.com.squarehealth.corelibrary.common.security.AuthenticatedUserData;
+import bd.com.squarehealth.corelibrary.dtos.BookingDto;
+import bd.com.squarehealth.corelibrary.enumerations.BookingStatus;
+import bd.com.squarehealth.corelibrary.services.BookingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,7 +25,8 @@ public class BookingsController {
     public ApiResponse getCustomersBookingRequestById(
             @PathVariable
             Long bookingId) throws Exception {
-        BookingDto booking = bookingsService.findCustomersBookingById(bookingId, 5L);
+        AuthenticatedUserData authenticatedUserData = (AuthenticatedUserData) SecurityContextHolder.getContext().getAuthentication();
+        BookingDto booking = bookingsService.findCustomersBookingById(bookingId, authenticatedUserData.getUserId());
 
         if (booking == null) { throw new ApiException(HttpStatus.NOT_FOUND, "Requested booking data was not found."); }
 
@@ -35,7 +38,8 @@ public class BookingsController {
 
     @GetMapping
     public ApiResponse getCustomersBookingRequests() {
-        List<BookingDto> bookings = bookingsService.findCustomersBookings(5L);
+        AuthenticatedUserData authenticatedUserData = (AuthenticatedUserData) SecurityContextHolder.getContext().getAuthentication();
+        List<BookingDto> bookings = bookingsService.findCustomersBookings(authenticatedUserData.getUserId());
         ApiResponse apiResponse = new ApiResponse(HttpStatus.OK, "Bookings retrieved successfully.");
         apiResponse.setData("bookings", bookings);
 
@@ -50,6 +54,9 @@ public class BookingsController {
         if (!bookingData.areCheckInCheckOutDatesValid()) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid booking date(s) provided.");
         }
+
+        AuthenticatedUserData authenticatedUserData = (AuthenticatedUserData) SecurityContextHolder.getContext().getAuthentication();
+        bookingData.setBookedBy(authenticatedUserData.getUserId());
 
         BookingDto booking = bookingsService.placeBookingRequest(bookingData);
         ApiResponse apiResponse = new ApiResponse(HttpStatus.OK, "Successfully placed your booking request.");

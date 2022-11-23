@@ -2,9 +2,12 @@ package bd.com.squarehealth.corelibrary.common.mail;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.stereotype.Component;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Map;
@@ -24,7 +27,7 @@ public class MailerImpl implements Mailer {
         this.host = host;
         this.port = port;
         this.username = username;
-        this.mailSender = createJavaMailSender(host, port, username, password);
+        mailSender = createJavaMailSender(host, port, username, password);
     }
 
     @Override

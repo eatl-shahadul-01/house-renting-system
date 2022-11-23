@@ -1,6 +1,5 @@
 package bd.com.squarehealth.authenticator.configurations;
 
-import bd.com.squarehealth.authenticator.services.UsersService;
 import bd.com.squarehealth.corelibrary.common.cryptography.CryptographicService;
 import bd.com.squarehealth.corelibrary.common.cryptography.CryptographicServiceImpl;
 import bd.com.squarehealth.corelibrary.common.cryptography.HmacSha512PasswordEncoder;
@@ -10,6 +9,7 @@ import bd.com.squarehealth.corelibrary.common.mail.Mailer;
 import bd.com.squarehealth.corelibrary.common.mail.MailerImpl;
 import bd.com.squarehealth.corelibrary.common.security.JsonWebTokenService;
 import bd.com.squarehealth.corelibrary.common.security.JsonWebTokenServiceImpl;
+import bd.com.squarehealth.corelibrary.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;

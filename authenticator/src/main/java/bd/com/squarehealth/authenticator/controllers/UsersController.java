@@ -1,13 +1,13 @@
 package bd.com.squarehealth.authenticator.controllers;
 
-import bd.com.squarehealth.authenticator.dtos.RegistrationDto;
-import bd.com.squarehealth.authenticator.dtos.UserDto;
-import bd.com.squarehealth.authenticator.dtos.VerificationDto;
-import bd.com.squarehealth.authenticator.entities.User;
-import bd.com.squarehealth.authenticator.services.UsersService;
 import bd.com.squarehealth.corelibrary.common.ApiException;
 import bd.com.squarehealth.corelibrary.common.ApiResponse;
 import bd.com.squarehealth.corelibrary.common.security.JsonWebTokenService;
+import bd.com.squarehealth.corelibrary.dtos.RegistrationDto;
+import bd.com.squarehealth.corelibrary.dtos.UserDto;
+import bd.com.squarehealth.corelibrary.dtos.VerificationDto;
+import bd.com.squarehealth.corelibrary.entities.User;
+import bd.com.squarehealth.corelibrary.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -57,7 +57,7 @@ public class UsersController {
                 registrationData.getPassword());
         UserDto adminData = new UserDto(admin);
 
-        ApiResponse apiResponse = new ApiResponse(HttpStatus.OK, "User registration successful.");
+        ApiResponse apiResponse = new ApiResponse(HttpStatus.OK, "Admin account created successfully.");
         apiResponse.setData("user", adminData);
 
         return apiResponse;
