@@ -1,6 +1,7 @@
 package bd.com.squarehealth.corelibrary.services;
 
 import bd.com.squarehealth.corelibrary.common.ApiException;
+import bd.com.squarehealth.corelibrary.common.DateUtilities;
 import bd.com.squarehealth.corelibrary.common.json.JsonSerializer;
 import bd.com.squarehealth.corelibrary.dtos.BookingDto;
 import bd.com.squarehealth.corelibrary.entities.Booking;
@@ -37,11 +38,7 @@ public class BookingsServiceImpl implements BookingsService {
         return bookings;
     }
 
-    private boolean doesTimeOverlap(Date fromA, Date toA, Date fromB, Date toB) {
-        return toA.getTime() >= fromB.getTime() && fromA.getTime() <= toB.getTime();
-    }
-
-    private boolean isHouseAvailable(House house, Date from, Date to) {
+    public boolean isHouseAvailable(House house, Date from, Date to) {
         // if the house post is not approved, the house shall not be available for booking...
         // if (house.getPostStatus() != PostStatus.APPROVED) { return false; }
         Set<Booking> bookings = house.getBookings();
@@ -51,7 +48,7 @@ public class BookingsServiceImpl implements BookingsService {
         if (bookings == null || bookings.size() == 0) { return true; }
 
         for (Booking booking : bookings) {
-            if (doesTimeOverlap(booking.getCheckInDate(), booking.getCheckOutDate(), from, to)) {
+            if (DateUtilities.doDatesOverlap(booking.getCheckInDate(), booking.getCheckOutDate(), from, to)) {
                 return false;
             }
         }

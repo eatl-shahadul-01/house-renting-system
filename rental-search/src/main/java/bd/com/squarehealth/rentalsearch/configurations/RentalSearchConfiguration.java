@@ -16,6 +16,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
+import redis.clients.jedis.JedisPooled;
 
 @Configuration
 public class RentalSearchConfiguration {
@@ -50,6 +51,14 @@ public class RentalSearchConfiguration {
 
     @Bean
     public RestTemplate restTemplate() { return new RestTemplate(); }
+
+    @Bean
+    public JedisPooled jedisPooled() {
+        String host = environment.getProperty("redis.host");
+        int port = Integer.parseInt(environment.getProperty("redis.port"));
+
+        return new JedisPooled(host, port);
+    }
 
     @Bean
     public Mailer mailer() {

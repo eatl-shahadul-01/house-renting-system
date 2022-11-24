@@ -51,9 +51,7 @@ public class BookingsController {
             @Valid
             @RequestBody
             BookingDto bookingData) throws Exception {
-        if (!bookingData.areCheckInCheckOutDatesValid()) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid booking date(s) provided.");
-        }
+        bookingData.validate();
 
         AuthenticatedUserData authenticatedUserData = (AuthenticatedUserData) SecurityContextHolder.getContext().getAuthentication();
         bookingData.setBookedBy(authenticatedUserData.getUserId());

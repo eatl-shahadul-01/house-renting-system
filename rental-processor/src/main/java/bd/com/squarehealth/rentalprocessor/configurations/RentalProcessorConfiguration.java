@@ -15,6 +15,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.RestTemplate;
+import redis.clients.jedis.JedisPooled;
 
 @Configuration
 public class RentalProcessorConfiguration {
@@ -45,6 +47,17 @@ public class RentalProcessorConfiguration {
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public RestTemplate restTemplate() { return new RestTemplate(); }
+
+    @Bean
+    public JedisPooled jedisPooled() {
+        String host = environment.getProperty("redis.host");
+        int port = Integer.parseInt(environment.getProperty("redis.port"));
+
+        return new JedisPooled(host, port);
     }
 
     @Bean

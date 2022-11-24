@@ -1,9 +1,12 @@
 package bd.com.squarehealth.corelibrary.dtos;
 
+import bd.com.squarehealth.corelibrary.common.ApiException;
+import bd.com.squarehealth.corelibrary.common.DateUtilities;
 import bd.com.squarehealth.corelibrary.common.Mapper;
 import bd.com.squarehealth.corelibrary.enumerations.BookingStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -45,18 +48,15 @@ public class BookingDto implements Mapper {
         house = bookingData.house;
     }
 
-    public boolean areCheckInCheckOutDatesValid() {
-        // checks if check in date is greater than or equal to check out date...
-        if (checkInDate == null || checkOutDate == null
-                || checkInDate.getTime() >= checkOutDate.getTime()) { return false; }
+    public void validate() throws Exception {
+        if (checkInDate == null || DateUtilities.isValidFutureDate(checkInDate)
+                || DateUtilities.isValidFutureDate(checkInDate)) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid check-in date provided.");
+        }
 
-        Date currentDate = new Date();
-        long currentDateInMilliseconds = currentDate.getTime() + 1;
-
-        // checks if check in and check out dates are less than current date...
-        if (checkInDate.getTime() < currentDateInMilliseconds
-                || checkOutDate.getTime() < currentDateInMilliseconds) { return false; }
-
-        return true;
+        if (checkOutDate == null || DateUtilities.isValidFutureDate(checkOutDate)
+                || DateUtilities.isValidFutureDate(checkOutDate)) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid check-out date provided.");
+        }
     }
 }

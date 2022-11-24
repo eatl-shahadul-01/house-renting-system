@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
@@ -23,9 +24,11 @@ public class Address {
     @Version
     private Long version;
 
+    @NotNull
     @Range(min = -90, max = 90, message = "Latitude must be between -90 and 90.")
     private Double latitude;
 
+    @NotNull
     @Range(min = -180, max = 180, message = "Longitude must be between -180 and 180.")
     private Double longitude;
 

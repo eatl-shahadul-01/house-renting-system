@@ -1,6 +1,7 @@
 package bd.com.squarehealth.corelibrary.dtos;
 
 import bd.com.squarehealth.corelibrary.common.ApiException;
+import bd.com.squarehealth.corelibrary.common.DateUtilities;
 import bd.com.squarehealth.corelibrary.common.Mapper;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,29 +48,45 @@ public class HouseSearchCriteriaDto implements Mapper {
     @Size(min = 1, max = 64, message = "The length of country must be between 1 and 64 characters.")
     private String country;
 
-    // repeated code...
-    public boolean areCheckInCheckOutDatesValid() {
-        // checks if check in date is greater than or equal to check out date...
-        if (checkInDate == null || checkOutDate == null
-                || checkInDate.getTime() >= checkOutDate.getTime()) { return false; }
-
-        Date currentDate = new Date();
-        long currentDateInMilliseconds = currentDate.getTime() + 1;
-
-        // checks if check in and check out dates are less than current date...
-        if (checkInDate.getTime() < currentDateInMilliseconds
-                || checkOutDate.getTime() < currentDateInMilliseconds) { return false; }
-
-        return true;
-    }
+    private static final String DEFAULT_STRING_VALUE = "no-criteria";
 
     public void validate() throws Exception {
-        if (maximumPrice < minimumPrice) {
+        if (minimumPrice != null && maximumPrice != null && maximumPrice < minimumPrice) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Minimum price must be less than the maximum price.");
         }
 
-        if (!areCheckInCheckOutDatesValid()) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid check-in/check-out dates provided.");
+        if (checkInDate != null && (DateUtilities.isValidFutureDate(checkInDate)
+                || DateUtilities.isValidFutureDate(checkInDate))) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid check-in date provided.");
         }
+
+        if (checkOutDate != null && (DateUtilities.isValidFutureDate(checkOutDate)
+                || DateUtilities.isValidFutureDate(checkOutDate))) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid check-out date provided.");
+        }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder(1024);
+        stringBuilder.append(checkInDate == null ? "" : "checkInDate=" + checkInDate.getTime() + "&");
+        stringBuilder.append(checkOutDate == null ? "" : "checkOutDate=" + checkOutDate.getTime() + "&");
+        stringBuilder.append(minimumPrice == null ? "" : "minimumPrice=" + minimumPrice + "&");
+        stringBuilder.append(maximumPrice == null ? "" : "maximumPrice=" + maximumPrice + "&");
+        stringBuilder.append(latitude == null ? "" : "latitude=" + latitude + "&");
+        stringBuilder.append(longitude == null ? "" : "longitude=" + longitude + "&");
+        stringBuilder.append(house == null ? "" : "house=" + house + "&");
+        stringBuilder.append(street == null ? "" : "street=" + street + "&");
+        stringBuilder.append(zipCode == null ? "" : "zipCode=" + zipCode + "&");
+        stringBuilder.append(area == null ? "" : "area=" + area + "&");
+        stringBuilder.append(city == null ? "" : "city=" + city + "&");
+        stringBuilder.append(country == null ? "" : "country=" + country);
+
+        String text = stringBuilder.toString();
+
+        // if text is of length zero, we'll return a default value...
+        if (text.length() == 0) { return DEFAULT_STRING_VALUE; }
+
+        return text;
     }
 }
