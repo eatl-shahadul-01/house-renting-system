@@ -73,6 +73,19 @@ public class BookingsController {
         return apiResponse;
     }
 
+    @PatchMapping(path = "{bookingId}/status/cancel")
+    public ApiResponse cancelCustomersBookingRequestById(
+            @PathVariable
+            Long bookingId) throws Exception {
+        AuthenticatedUserData authenticatedUserData = (AuthenticatedUserData) SecurityContextHolder.getContext().getAuthentication();
+        BookingDto booking = bookingsService.cancelCustomersBookingById(bookingId, authenticatedUserData.getUserId());
+
+        ApiResponse apiResponse = new ApiResponse(HttpStatus.OK, "Your booking has been cancelled.");
+        apiResponse.setData("booking", booking);
+
+        return apiResponse;
+    }
+
     // ADMIN ONLY...
     @PatchMapping(path = "{bookingId}/status/{status}")
     public ApiResponse changeBookingStatus(

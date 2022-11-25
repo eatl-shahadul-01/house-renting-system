@@ -1,5 +1,6 @@
 package bd.com.squarehealth.corelibrary.common;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public final class DateUtilities {
@@ -19,5 +20,13 @@ public final class DateUtilities {
     // but that would require another object to be created to call this method...
     public static boolean doDatesOverlap(Date fromA, Date toA, Date fromB, Date toB) {
         return toA.getTime() >= fromB.getTime() && fromA.getTime() <= toB.getTime();
+    }
+
+    public static Date subtractDays(Date date, int days) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, -days);
+
+        return calendar.getTime();
     }
 }

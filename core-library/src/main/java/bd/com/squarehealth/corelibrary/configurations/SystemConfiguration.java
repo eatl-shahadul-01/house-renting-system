@@ -1,4 +1,4 @@
-package bd.com.squarehealth.rentalprocessor.configurations;
+package bd.com.squarehealth.corelibrary.configurations;
 
 import bd.com.squarehealth.corelibrary.common.cryptography.CryptographicService;
 import bd.com.squarehealth.corelibrary.common.cryptography.CryptographicServiceImpl;
@@ -19,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import redis.clients.jedis.JedisPooled;
 
 @Configuration
-public class RentalProcessorConfiguration {
+public class SystemConfiguration {
 
     @Autowired
     private Environment environment;

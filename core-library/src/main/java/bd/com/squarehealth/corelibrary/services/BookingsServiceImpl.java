@@ -76,7 +76,7 @@ public class BookingsServiceImpl implements BookingsService {
         boolean isHouseAvailable = isHouseAvailable(house, from, to);
 
         if (!isHouseAvailable) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "Requested house is not available.");
+            throw new ApiException(HttpStatus.BAD_REQUEST, "This house is not available for booking on your requested dates.");
         }
 
         return house;
@@ -102,15 +102,57 @@ public class BookingsServiceImpl implements BookingsService {
     }
 
     @Override
-    public BookingDto changeBookingStatusById(Long bookingId, BookingStatus bookingStatus) {
+    public BookingDto changeBookingStatusById(Long bookingId, BookingStatus bookingStatus) throws ApiException {
         Optional<Booking> optionalBooking = bookingRepository.findById(bookingId);
 
-        if (!optionalBooking.isPresent()) { return null; }
+        if (!optionalBooking.isPresent()) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "Requested booking data was not found.");
+        }
 
         Booking booking = optionalBooking.get();
-        booking.setBookingStatus(bookingStatus);
 
-        bookingRepository.save(booking);
+        // if the booking in not in pending state nor in approved state, we won't proceed further...
+        if (booking.getBookingStatus() == BookingStatus.CANCELLED) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Booking was cancelled by the customer.");
+        }
+
+        // changes the booking status...
+        booking.setBookingStatus(bookingStatus);
+        // saves to the database...
+        booking = bookingRepository.save(booking);
+
+        BookingDto bookingData = new BookingDto(booking);
+
+        return bookingData;
+    }
+
+    @Override
+    public BookingDto cancelCustomersBookingById(Long bookingId, Long bookedBy) throws ApiException {
+        Optional<Booking> optionalBooking = bookingRepository.findByIdAndBookedBy(bookingId, bookedBy);
+
+        if (!optionalBooking.isPresent()) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "Requested booking data was not found.");
+        }
+
+        Booking booking = optionalBooking.get();
+
+        // if the booking in not in pending state nor in approved state, we won't proceed further...
+        if (booking.getBookingStatus() != BookingStatus.PENDING &&
+                booking.getBookingStatus() != BookingStatus.APPROVED) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Booking cannot be cancelled.");
+        }
+
+        Date sevenDaysBeforeBookingDate = DateUtilities.subtractDays(booking.getCheckInDate(), 7);
+
+        // booking can be cancelled seven days before the check-in date...
+        if (DateUtilities.isValidFutureDate(sevenDaysBeforeBookingDate)) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Booking can only be cancelled seven days before the check-in date.");
+        }
+
+        // cancels the booking...
+        booking.setBookingStatus(BookingStatus.CANCELLED);
+        // saves to the database...
+        booking = bookingRepository.save(booking);
 
         BookingDto bookingData = new BookingDto(booking);
 

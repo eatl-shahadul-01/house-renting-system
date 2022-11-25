@@ -1,5 +1,6 @@
 package bd.com.squarehealth.corelibrary.services;
 
+import bd.com.squarehealth.corelibrary.common.ApiException;
 import bd.com.squarehealth.corelibrary.dtos.BookingDto;
 import bd.com.squarehealth.corelibrary.entities.House;
 import bd.com.squarehealth.corelibrary.enumerations.BookingStatus;
@@ -15,7 +16,9 @@ public interface BookingsService {
 
     List<BookingDto> findCustomersBookings(Long bookedBy);
 
-    BookingDto changeBookingStatusById(Long bookingId, BookingStatus bookingStatus);
+    BookingDto changeBookingStatusById(Long bookingId, BookingStatus bookingStatus) throws ApiException;
+
+    BookingDto cancelCustomersBookingById(Long bookingId, Long bookedBy) throws ApiException;
 
     List<BookingDto> findBookingRequestsByBookingStatus(BookingStatus bookingStatus);
 

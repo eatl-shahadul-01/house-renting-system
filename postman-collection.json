@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "88fce29e-65a0-4d59-84a9-9012aa3eefed",
+		"_postman_id": "5b97b460-dd55-4eac-8bd9-5fc8a78e6269",
 		"name": "house-renting-system",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -289,6 +289,40 @@
 							"response": []
 						},
 						{
+							"name": "Cancel Customer's Booking by ID",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "bearer {{accessToken}}",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "{{rentalProcessorHost}}/{{rentalProcessorBasePath}}/v{{rentalProcessorApiVersion}}/bookings/:bookingId/status/cancel",
+									"host": [
+										"{{rentalProcessorHost}}"
+									],
+									"path": [
+										"{{rentalProcessorBasePath}}",
+										"v{{rentalProcessorApiVersion}}",
+										"bookings",
+										":bookingId",
+										"status",
+										"cancel"
+									],
+									"variable": [
+										{
+											"key": "bookingId",
+											"value": "16"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Change Booking Status (Admin)",
 							"request": {
 								"method": "PATCH",
@@ -315,7 +349,7 @@
 									"variable": [
 										{
 											"key": "bookingId",
-											"value": "2"
+											"value": "16"
 										},
 										{
 											"key": "status",
@@ -481,7 +515,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"checkInDate\": \"\",\r\n    \"checkOutDate\": \"\",\r\n    \"minimumPrice\": 100,\r\n    \"maximumPrice\": 200,\r\n    \"latitude\": -56,\r\n    \"longitude\": -56,\r\n    \"house\": \"\",\r\n    \"street\": \"\",\r\n    \"zipCode\": \"\",\r\n    \"area\": \"\",\r\n    \"city\": \"\",\r\n    \"country\": \"\"\r\n}\r\n",
+									"raw": "{\r\n    \"exampleCheckInCheckOutDate\": \"2022-11-27T00:00:00.000Z\",\r\n    \"checkInDate\": null,\r\n    \"checkOutDate\": null,\r\n    \"minimumPrice\": null,\r\n    \"maximumPrice\": null,\r\n    \"latitude\": null,\r\n    \"longitude\": null,\r\n    \"house\": null,\r\n    \"street\": null,\r\n    \"zipCode\": null,\r\n    \"area\": null,\r\n    \"city\": null,\r\n    \"country\": null\r\n}\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -520,7 +554,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"houseId\": 1,\r\n    \"checkInDate\": \"2022-11-21T00:00:00.000Z\",\r\n    \"checkOutDate\": \"2022-11-22T00:00:00.000Z\"\r\n}\r\n",
+									"raw": "{\r\n    \"houseId\": 1,\r\n    \"checkInDate\": \"2022-11-28T00:00:00.000Z\",\r\n    \"checkOutDate\": \"2022-11-29T00:00:00.000Z\"\r\n}\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
