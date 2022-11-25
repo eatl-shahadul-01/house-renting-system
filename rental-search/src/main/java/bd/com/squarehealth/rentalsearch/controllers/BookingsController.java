@@ -8,10 +8,7 @@ import bd.com.squarehealth.corelibrary.services.BookingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -26,7 +23,9 @@ public class BookingsController {
     public ApiResponse placeBookingRequest(
             @Valid
             @RequestBody
-            BookingDto bookingData) throws Exception {
+            BookingDto bookingData,
+            @RequestHeader(name = "Authorization")
+            String authorization) throws Exception {
         bookingData.validate();
 
         AuthenticatedUserData authenticatedUserData = (AuthenticatedUserData) SecurityContextHolder.getContext().getAuthentication();
