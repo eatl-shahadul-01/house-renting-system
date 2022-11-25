@@ -48,7 +48,11 @@ public class BookingsServiceImpl implements BookingsService {
         if (bookings == null || bookings.size() == 0) { return true; }
 
         for (Booking booking : bookings) {
-            if (DateUtilities.doDatesOverlap(booking.getCheckInDate(), booking.getCheckOutDate(), from, to)) {
+            // booking requests that were cancelled or rejected shall not be taken into consideration...
+            // so, only if the booking is (pending or approved) and dates overlap,
+            // the house shall not be available for booking...
+            if ((booking.getBookingStatus() == BookingStatus.PENDING || booking.getBookingStatus() == BookingStatus.APPROVED)
+                    && DateUtilities.doDatesOverlap(booking.getCheckInDate(), booking.getCheckOutDate(), from, to)) {
                 return false;
             }
         }

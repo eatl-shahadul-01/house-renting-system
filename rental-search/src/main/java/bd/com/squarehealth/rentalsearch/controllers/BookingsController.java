@@ -1,10 +1,9 @@
 package bd.com.squarehealth.rentalsearch.controllers;
 
-import bd.com.squarehealth.corelibrary.common.ApiException;
 import bd.com.squarehealth.corelibrary.common.ApiResponse;
 import bd.com.squarehealth.corelibrary.common.security.AuthenticatedUserData;
 import bd.com.squarehealth.corelibrary.dtos.BookingDto;
-import bd.com.squarehealth.corelibrary.services.BookingsService;
+import bd.com.squarehealth.corelibrary.services.ISCService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,7 +16,7 @@ import javax.validation.Valid;
 public class BookingsController {
 
     @Autowired
-    private BookingsService bookingsService;
+    private ISCService iscService;
 
     @PostMapping
     public ApiResponse placeBookingRequest(
@@ -31,7 +30,7 @@ public class BookingsController {
         AuthenticatedUserData authenticatedUserData = (AuthenticatedUserData) SecurityContextHolder.getContext().getAuthentication();
         bookingData.setBookedBy(authenticatedUserData.getUserId());
 
-        BookingDto booking = bookingsService.placeBookingRequest(bookingData);
+        BookingDto booking = iscService.placeBookingRequest(bookingData, authorization);
         ApiResponse apiResponse = new ApiResponse(HttpStatus.OK, "Successfully placed your booking request.");
         apiResponse.setData("booking", booking);
 

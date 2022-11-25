@@ -12,7 +12,7 @@ public final class DateUtilities {
         Date currentDate = new Date(System.currentTimeMillis());
         long currentDateInMilliseconds = currentDate.getTime();
 
-        return date.getTime() < currentDateInMilliseconds;
+        return date.getTime() > currentDateInMilliseconds;
     }
 
     public static boolean doDatesOverlap(Date fromA, Date toA, Date fromB, Date toB) {

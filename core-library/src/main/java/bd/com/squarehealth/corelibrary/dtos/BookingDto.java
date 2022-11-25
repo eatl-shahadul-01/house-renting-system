@@ -49,14 +49,16 @@ public class BookingDto implements Mapper {
     }
 
     public void validate() throws Exception {
-        if (checkInDate == null || DateUtilities.isValidFutureDate(checkInDate)
-                || DateUtilities.isValidFutureDate(checkInDate)) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid check-in date provided.");
+        if (checkInDate == null || !DateUtilities.isValidFutureDate(checkInDate)) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Check-in date must be a future date.");
         }
 
-        if (checkOutDate == null || DateUtilities.isValidFutureDate(checkOutDate)
-                || DateUtilities.isValidFutureDate(checkOutDate)) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid check-out date provided.");
+        if (checkOutDate == null || !DateUtilities.isValidFutureDate(checkOutDate)) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Check-out date must be a future date.");
+        }
+
+        if (!DateUtilities.isValidDateRange(checkInDate, checkOutDate)) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Check-in date must come before check-out date.");
         }
     }
 }

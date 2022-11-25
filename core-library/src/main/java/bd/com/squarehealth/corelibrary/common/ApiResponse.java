@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 import java.time.Instant;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +33,14 @@ public class ApiResponse {
         this(status, message);
 
         setData(data);
+    }
+
+    public ApiResponse(Map<String, Object> map) {
+        this.status = (int) map.get("status");
+        this.httpStatus = HttpStatus.resolve(status);
+        this.date = (String) map.get("date");
+        this.message = (String) map.get("message");
+        this.data = (Map<String, Object>) map.get("data");
     }
 
     public void setData(String key, Object value) {

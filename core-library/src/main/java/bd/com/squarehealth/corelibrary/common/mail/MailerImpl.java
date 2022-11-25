@@ -2,13 +2,9 @@ package bd.com.squarehealth.corelibrary.common.mail;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.stereotype.Component;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Map;
 import java.util.Properties;
@@ -51,7 +47,7 @@ public class MailerImpl implements Mailer {
 
     @Override
     public boolean sendHtmlMessage(String recipient, String subject, String templateName, Map<String, Object> data) {
-        throw new NotImplementedException();
+        throw new RuntimeException("Method not implemented");
     }
 
     private static JavaMailSender createJavaMailSender(String host, int port, String username, String password) {
