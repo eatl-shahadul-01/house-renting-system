@@ -15,6 +15,8 @@ public final class DateUtilities {
         return date.getTime() > currentDateInMilliseconds;
     }
 
+    // Note: could've made another class called DateRange to hold from and to dates.
+    // but that would require another object to be created to call this method...
     public static boolean doDatesOverlap(Date fromA, Date toA, Date fromB, Date toB) {
         return toA.getTime() >= fromB.getTime() && fromA.getTime() <= toB.getTime();
     }

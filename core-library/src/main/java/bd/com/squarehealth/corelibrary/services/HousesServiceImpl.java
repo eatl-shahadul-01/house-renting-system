@@ -1,6 +1,7 @@
 package bd.com.squarehealth.corelibrary.services;
 
 import bd.com.squarehealth.corelibrary.common.DateUtilities;
+import bd.com.squarehealth.corelibrary.common.MathUtilities;
 import bd.com.squarehealth.corelibrary.common.json.JsonSerializer;
 import bd.com.squarehealth.corelibrary.dtos.HouseDto;
 import bd.com.squarehealth.corelibrary.dtos.HouseSearchCriteriaDto;
@@ -76,9 +77,15 @@ public class HousesServiceImpl implements HousesService {
         // if latitude and longitude are not provided, we don't have any more criteria to check...
         if (searchCriteria.getLatitude() == null && searchCriteria.getLongitude() == null) { return true; }
         // otherwise, checks if the given latitude and longitude exactly matches the house's latitude and longitude...
-        if (searchCriteria.getLatitude().equals(address.getLatitude()) && searchCriteria.getLongitude().equals(address.getLongitude())) { return true; }
-        // otherwise, we'll check if the house is within 10 km range of the given latitude and longitude from google map...
-        // Note: 10 km radius around the position/coordinate (latitude and latitude) could not be implemented due to time constraint...
+        if (searchCriteria.getLatitude().equals(address.getLatitude()) &&
+                searchCriteria.getLongitude().equals(address.getLongitude())) { return true; }
+
+        // otherwise, we'll calculate the distance between the house and the given position...
+        double distanceInKilometers = MathUtilities.calculateGreatCircleDistance(address.getLatitude(),
+                address.getLongitude(), searchCriteria.getLatitude(), searchCriteria.getLongitude());
+
+        // now we'll check if the house is not within the 10 kilometers range of the given latitude and longitude...
+        if (distanceInKilometers > 10.0) { return false; }
 
         return true;
     }
